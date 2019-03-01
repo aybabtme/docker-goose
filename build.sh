@@ -1,14 +1,16 @@
 #!/bin/bash
 
+set -eu
+
+HUB_USER=$(op get item Docker | jq -r '.details.fields[] | select(.designation=="username").value')
+HUB_PWD=$(op get item Docker | jq -r '.details.fields[] | select(.designation=="password").value')
+
 echo "Logging into Docker Hub"
-docker login -u $HUB_USER -p $HUB_PASSWORD
+echo $HUB_PWD | docker login -u $HUB_USER --password-stdin
 
 echo "Building latest image"
-docker build \
-	-t gomicro/goose:latest .
-if [ "$TRAVIS_BRANCH" == "master" ]; then
-	echo "Pushing image to Docker Hub"
-	docker pull gomicro/goose:latest
-	docker push gomicro/goose:latest
-	docker rmi gomicro/goose:latest
-fi
+docker build -t aybabtme/goose:latest .
+
+echo "Pushing image to Docker Hub"
+docker push aybabtme/goose:latest
+docker rmi aybabtme/goose:latest
