@@ -1,5 +1,5 @@
 FROM golang:alpine3.9
-MAINTAINER Antoine Grondin <dan9186@gmail.com>
+MAINTAINER Antoine Grondin <antoinegrondin@gmail.com>
 
 RUN apk update && \
     apk upgrade && \
